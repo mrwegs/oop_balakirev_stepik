@@ -1,20 +1,24 @@
-class Money:
-    def __init__(self, money):
-        if self.check_money(money):
-            self.__money = money
+class Book:
 
-    def set_money(self, money):
-        if self.check_money(money):
-            self.__money = money
+    def __init__(self, author, title, price):
+        self.__title = title
+        self.__author = author
+        self.__price = price
 
-    def get_money(self):
-        return self.__money
+    def set_title(self, title):
+        self.__title = title
 
-    def add_money(self, money):
-        if self.__class__.check_money(money.__money):
-            self.__money += money.__money
+    def set_author(self, author):
+        self.__author = author
 
-    @staticmethod
-    def check_money(money):
-        return isinstance(money, int) and money >= 0
+    def set_price(self, price):
+        self.__price = price
 
+    def get_title(self):
+        return self.__title
+
+    def get_author(self):
+        return self.__author
+
+    def get_price(self):
+        return self.__price
