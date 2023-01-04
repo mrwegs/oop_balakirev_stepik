@@ -1,19 +1,30 @@
-class Line:
-    def __init__(self, x1, y1, x2, y2):
-        self.__x1 = x1
-        self.__y1 = y1
-        self.__x2 = x2
-        self.__y2 = y2
-
-    def set_coords(self, x1, y1, x2, y2):
-        self.__x1 = x1
-        self.__y1 = y1
-        self.__x2 = x2
-        self.__y2 = y2
+class Point:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
 
     def get_coords(self):
-        return self.__x1, self.__y1, self.__x2, self.__y2
+        return self.__x, self.__y
+
+
+class Rectangle:
+    def __init__(self, *args):
+        if len(args) == 2:
+            self.__sp = args[0]
+            self.__ep = args[1]
+        else:
+            self.__sp = Point(args[0], args[1])
+            self.__ep = Point(args[2], args[3])
+
+    def set_coords(self, sp, ep):
+        self.__sp = sp
+        self.__ep = ep
+
+    def get_coords(self):
+        return self.__sp, self.__ep
 
     def draw(self):
-        print(*self.get_coords())
+        print(f'Прямоугольник с координатами: {self.get_coords()[0].get_coords()} {self.get_coords()[1].get_coords()}')
 
+
+rect = Rectangle(0, 0, 20, 34)
