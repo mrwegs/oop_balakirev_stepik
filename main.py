@@ -1,17 +1,20 @@
-class Clock:
-    def __init__(self, tm=0):
-        self.__time = tm
+class Money:
+    def __init__(self, money):
+        if self.check_money(money):
+            self.__money = money
 
-    def set_time(self, tm):
-        if self.__check_time(tm):
-            self.__time = tm
+    def set_money(self, money):
+        if self.check_money(money):
+            self.__money = money
 
-    def get_time(self):
-        return self.__time
+    def get_money(self):
+        return self.__money
+
+    def add_money(self, money):
+        if self.__class__.check_money(money.__money):
+            self.__money += money.__money
 
     @staticmethod
-    def __check_time(tm):
-        return isinstance(tm, int) and 0 <= tm < 100_000
+    def check_money(money):
+        return isinstance(money, int) and money >= 0
 
-
-clock = Clock(4530)
