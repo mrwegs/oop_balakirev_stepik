@@ -1,68 +1,30 @@
-class ObjList:
-    def __init__(self, data):
-        self.__next = None
-        self.__prev = None
-        self.__data = data
-
-    def set_next(self, obj):
-        if self.__next is None:
-            self.__next = obj
-        else:
-            self.__next.set_next(obj)
-
-    def set_prev(self, obj):
-        if self.__prev is None:
-            self.__prev = obj
-        else:
-            self.__prev.set_prev(obj)
-
-    def get_next(self):
-        return self.__next
-
-    def get_prev(self):
-        return self.__prev
-
-    def set_data(self, data):
-        self.__data = data
-
-    def get_data(self):
-        return self.__data
+import random as r
+from string import ascii_lowercase, ascii_uppercase, digits
+import re
 
 
-class LinkedList:
-    def __init__(self):
-        self.head = None
-        self.tail = None
+class EmailValidator:
+    ALLOW_SYMBOLS = ascii_uppercase + ascii_lowercase + digits + '.' + '_'
 
-    def add_obj(self, obj: ObjList):
-        if self.head is None:
-            self.head = obj
-        elif self.tail is None:
-            self.tail = obj
-            self.head.set_next(obj)
-            self.tail.set_prev(self.head)
-        else:
-            self.tail.set_next(obj)
-            obj.set_prev(self.tail)
-            self.tail = obj
+    __instance = None
 
-    def remove_obj(self):
-        if self.tail is None:
-            self.head = None
-            return
-        new_tail = self.tail.get_prev()
-        new_tail.set_next = None
-        self.tail = new_tail
+    def __new__(cls, *args, **kwargs):
+        return cls.__instance
 
-    def get_data(self):
-        data_list = []
-        obj = self.head
-        if obj:
-            data_list.append(obj.get_data())
-            while obj.get_next() is not None:
-                obj = obj.get_next()
-                data_list.append(obj.get_data())
+    @classmethod
+    def get_random_email(cls):
+        n = r.randint(1, 20)
+        name = r.choices(cls.ALLOW_SYMBOLS, k=n)
+        return ''.join(name) + '@gmail.com'
 
-        return data_list
+    @classmethod
+    def check_email(cls, email):
+        if not cls.__is_email_str(email):
+            return False
+        pattern = r'((\w)(\.?)){1,100}@(\w+\.[a-z]+){1,50}'
+        match = re.fullmatch(pattern, email)
+        return bool(match)
 
-
+    @staticmethod
+    def __is_email_str(email):
+        return isinstance(email, str)
