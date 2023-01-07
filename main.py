@@ -1,65 +1,37 @@
-class StackObj:
-    def __init__(self, data):
-        self.__data = data
-        self.__next = None
+class RadiusVector2D:
+    MIN_COORD = -100
+    MAX_COORD = 1024
 
-    @property
-    def data(self):
-        return self.__data
-
-    @data.setter
-    def data(self, value):
-        self.__data = value
-
-    @property
-    def next(self):
-        return self.__next
-
-    @next.setter
-    def next(self, value):
-        if isinstance(value, StackObj) or value is None:
-            self.__next = value
-
-
-class Stack:
-    def __init__(self):
-        self.top = None
-
-    def push(self, obj: StackObj):
-        if self.top:
-            check_obj = self.top
-            while check_obj.next is not None:
-                check_obj = check_obj.next
-            check_obj.next = obj
+    def __init__(self, x: int = 0, y: int = 0):
+        if isinstance(x, (int, float)) \
+                and isinstance(y, (int, float)) \
+                and self.MIN_COORD <= x <= self.MAX_COORD \
+                and self.MIN_COORD <= y <= self.MAX_COORD:
+            self.__x = x
+            self.__y = y
         else:
-            self.top = obj
+            self.__x = 0
+            self.__y = 0
 
-    def pop(self):
-        if self.top and self.top.next:
-            first = self.top
-            second = first.next
-            while second and second.next is not None:
-                first = second
-                second = first.next
-            pop_item = second
-            first.next = None
-            return pop_item
-        pop_item = self.top
-        self.top = None
-        return pop_item
+    @property
+    def x(self):
+        return self.__x
 
-    def get_data(self):
-        res = list()
-        check_obj = self.top
-        while check_obj is not None:
-            res.append(check_obj.data)
-            check_obj = check_obj.next
+    @x.setter
+    def x(self, value):
+        if isinstance(value, (int, float)) and self.MIN_COORD <= value <= self.MAX_COORD:
+            self.__x = value
 
-        return res
+    @property
+    def y(self):
+        return self.__y
 
+    @y.setter
+    def y(self, value):
+        if isinstance(value, (int, float)) and self.MIN_COORD <= value <= self.MAX_COORD:
+            self.__y = value
 
-s = Stack()
-top = StackObj("obj_1")
-s.push(top)
-s.pop()
-assert s.get_data() == [], f"метод get_data вернул неверные данные: {s.get_data()}"
+    @staticmethod
+    def norm2(vector):
+        return vector.x ** 2 + vector.y ** 2
+
