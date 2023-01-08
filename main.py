@@ -1,28 +1,23 @@
-import math
+class PhoneNumber:
+    def __init__(self, number: int, fio: str):
+        self.number = number if self.check_phone(number) else 00000000000
+        self.fio = fio
+
+    @staticmethod
+    def check_phone(phone: int):
+        return len(str(phone)) == 11 and isinstance(phone, int)
 
 
-class LineTo:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+class PhoneBook:
+    def __init__(self):
+        self.phone_list = list()
 
+    def add_phone(self, phone: PhoneNumber):
+        self.phone_list.append(phone)
 
-class PathLines:
-    def __init__(self, *args):
-        self.lines = list(args)
+    def remove_phone(self, indx):
+        self.phone_list.pop(indx)
 
-    def get_path(self):
-        return self.lines
+    def get_phone_list(self):
+        return self.phone_list
 
-    def get_length(self):
-        # L = sqrt((x1 - x0) ^ 2 + (y1 - y0) ^ 2) - формула
-        path_len = x0 = y0 = 0
-        for line in self.lines:
-            x1, y1 = line.x, line.y
-            path_len += math.sqrt(math.pow(x1 - x0, 2) + math.pow(y1 - y0, 2))
-            x0, y0 = x1, y1
-
-        return path_len
-
-    def add_line(self, line):
-        self.lines.append(line)
