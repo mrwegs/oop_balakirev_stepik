@@ -1,47 +1,28 @@
-class TreeObj:
-    def __init__(self, indx, value=None):
-        self.indx = indx
-        self.value = value
-        self.__left = None
-        self.__right = None
-
-    @property
-    def left(self):
-        return self.__left
-
-    @left.setter
-    def left(self, value):
-        self.__left = value
-
-    @property
-    def right(self):
-        return self.__right
-
-    @right.setter
-    def right(self, value):
-        self.__right = value
+import math
 
 
-class DecisionTree:
-    @classmethod
-    def predict(cls, root, x):
-        obj = root
-        index = obj.indx
-        while obj.left is not None and obj.right is not None:
-            if x[index]:
-                obj = obj.left
-                index = obj.indx
-            else:
-                obj = obj.right
-                index = obj.indx
-        else:
-            return obj.value
+class LineTo:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-    @classmethod
-    def add_obj(cls, obj: TreeObj, node: TreeObj = None, left: bool = True):
-        if node:
-            if left:
-                node.left = obj
-            else:
-                node.right = obj
-        return obj
+
+class PathLines:
+    def __init__(self, *args):
+        self.lines = list(args)
+
+    def get_path(self):
+        return self.lines
+
+    def get_length(self):
+        # L = sqrt((x1 - x0) ^ 2 + (y1 - y0) ^ 2) - формула
+        path_len = x0 = y0 = 0
+        for line in self.lines:
+            x1, y1 = line.x, line.y
+            path_len += math.sqrt(math.pow(x1 - x0, 2) + math.pow(y1 - y0, 2))
+            x0, y0 = x1, y1
+
+        return path_len
+
+    def add_line(self, line):
+        self.lines.append(line)
