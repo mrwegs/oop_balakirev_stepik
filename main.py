@@ -1,37 +1,47 @@
-class RadiusVector2D:
-    MIN_COORD = -100
-    MAX_COORD = 1024
+class TreeObj:
+    def __init__(self, indx, value=None):
+        self.indx = indx
+        self.value = value
+        self.__left = None
+        self.__right = None
 
-    def __init__(self, x: int = 0, y: int = 0):
-        if isinstance(x, (int, float)) \
-                and isinstance(y, (int, float)) \
-                and self.MIN_COORD <= x <= self.MAX_COORD \
-                and self.MIN_COORD <= y <= self.MAX_COORD:
-            self.__x = x
-            self.__y = y
+    @property
+    def left(self):
+        return self.__left
+
+    @left.setter
+    def left(self, value):
+        self.__left = value
+
+    @property
+    def right(self):
+        return self.__right
+
+    @right.setter
+    def right(self, value):
+        self.__right = value
+
+
+class DecisionTree:
+    @classmethod
+    def predict(cls, root, x):
+        obj = root
+        index = obj.indx
+        while obj.left is not None and obj.right is not None:
+            if x[index]:
+                obj = obj.left
+                index = obj.indx
+            else:
+                obj = obj.right
+                index = obj.indx
         else:
-            self.__x = 0
-            self.__y = 0
+            return obj.value
 
-    @property
-    def x(self):
-        return self.__x
-
-    @x.setter
-    def x(self, value):
-        if isinstance(value, (int, float)) and self.MIN_COORD <= value <= self.MAX_COORD:
-            self.__x = value
-
-    @property
-    def y(self):
-        return self.__y
-
-    @y.setter
-    def y(self, value):
-        if isinstance(value, (int, float)) and self.MIN_COORD <= value <= self.MAX_COORD:
-            self.__y = value
-
-    @staticmethod
-    def norm2(vector):
-        return vector.x ** 2 + vector.y ** 2
-
+    @classmethod
+    def add_obj(cls, obj: TreeObj, node: TreeObj = None, left: bool = True):
+        if node:
+            if left:
+                node.left = obj
+            else:
+                node.right = obj
+        return obj
