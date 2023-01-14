@@ -1,33 +1,43 @@
-class FloatValue:
-    @staticmethod
-    def validate_float(value):
-        if not isinstance(value, float):
-            raise TypeError("Присваивать можно только вещественный тип данных.")
+class ValidateString:
+    def __init__(self, min_length=3, max_length=100):
+        self.min_length = min_length
+        self.max_length = max_length
 
+    def validate(self, string):
+        return isinstance(string, str) and len(string) in range(self.min_length, self.max_length + 1)
+
+
+class StringValue:
     def __set_name__(self, owner, name):
         self.name = '_' + name
+
+    def __init__(self, validator: ValidateString):
+        self.validator = validator
+
+    def __set__(self, instance, value):
+        if self.validator.validate(value):
+            setattr(instance, self.name, value)
 
     def __get__(self, instance, owner):
         return getattr(instance, self.name)
 
-    def __set__(self, instance, value):
-        self.validate_float(value)
-        setattr(instance, self.name, value)
 
+class RegisterForm:
+    login = StringValue(validator=ValidateString())
+    password = StringValue(validator=ValidateString())
+    email = StringValue(validator=ValidateString())
 
-class Cell:
-    value = FloatValue()
+    def __init__(self, login, password, email):
+        self.login = login
+        self.password = password
+        self.email = email
 
-    def __init__(self, value):
-        self.value = value
+    def get_fields(self):
+        return [self.login, self.password, self.email]
 
-
-class TableSheet:
-    def __init__(self, n, m):
-        self.n = n
-        self.m = m
-        self.cells = [[Cell(0.0)] * m] * n
-
-
-table = TableSheet(5, 3)
-table.cells = [[Cell(float(i * table.m + j)) for j in range(1, table.m + 1)] for i in range(table.n)]
+    def show(self):
+        print(f'''<form>
+        Логин: {self.login}
+        Пароль: {self.password}
+        Email: {self.email}
+        </form>''')
