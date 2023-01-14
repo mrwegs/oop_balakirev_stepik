@@ -1,43 +1,50 @@
-class ValidateString:
-    def __init__(self, min_length=3, max_length=100):
-        self.min_length = min_length
-        self.max_length = max_length
-
-    def validate(self, string):
-        return isinstance(string, str) and len(string) in range(self.min_length, self.max_length + 1)
-
-
 class StringValue:
+    def __init__(self, min_length = 2, max_length = 50):
+        self.min = min_length
+        self.max = max_length
+
     def __set_name__(self, owner, name):
         self.name = '_' + name
-
-    def __init__(self, validator: ValidateString):
-        self.validator = validator
-
-    def __set__(self, instance, value):
-        if self.validator.validate(value):
-            setattr(instance, self.name, value)
 
     def __get__(self, instance, owner):
         return getattr(instance, self.name)
 
+    def __set__(self, instance, value):
+        if isinstance(value, str) and len(value) in range(self.min, self.max + 1):
+            setattr(instance, self.name, value)
 
-class RegisterForm:
-    login = StringValue(validator=ValidateString())
-    password = StringValue(validator=ValidateString())
-    email = StringValue(validator=ValidateString())
 
-    def __init__(self, login, password, email):
-        self.login = login
-        self.password = password
-        self.email = email
+class PriceValue:
+    def __init__(self, max_value = 10000):
+        self.max = max_value
 
-    def get_fields(self):
-        return [self.login, self.password, self.email]
+    def __set_name__(self, owner, name):
+        self.name = '_' + name
 
-    def show(self):
-        print(f'''<form>
-        Логин: {self.login}
-        Пароль: {self.password}
-        Email: {self.email}
-        </form>''')
+    def __get__(self, instance, owner):
+        return getattr(instance, self.name)
+
+    def __set__(self, instance, value):
+        if isinstance(value, (int, float)) and value in range(0, self.max + 1):
+            setattr(instance, self.name, value)
+
+
+class SuperShop:
+    def __init__(self, name):
+        self.name = name
+        self.goods = []
+
+    def add_product(self, product):
+        self.goods.append(product)
+
+    def remove_product(self, product):
+        self.goods.remove(product)
+
+
+class Product:
+    name = StringValue()
+    price = PriceValue()
+
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
