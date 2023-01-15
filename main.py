@@ -1,32 +1,47 @@
-class Thing:
-    def __init__(self, name, weight):
-        self.name = name
-        self.weight = weight
-
-
-class Bag:
-    def __init__(self, max_weight):
-        self.max_weight = max_weight
-        self.__things = []
-
-    def get_total_weight(self):
-        if self.things:
-            return sum([thing.weight for thing in self.__things])
-        return 0
+class Telecast:
+    def __init__(self, id, name, duration):
+        self.__id = id
+        self.__name = name
+        self.__duration = duration
 
     @property
-    def things(self):
-        return self.__things
+    def uid(self):
+        return self.__id
 
-    @things.setter
-    def things(self, value):
-        self.__things = value
+    @uid.setter
+    def uid(self, value):
+        self.__id = value
+        
+    @property
+    def name(self):
+        return self.__name
+    
+    @name.setter
+    def name(self, value):
+        self.__name = value
+        
+    @property
+    def duration(self):
+        return self.__duration
 
-    def add_thing(self, thing: Thing):
-        if self.get_total_weight() + thing.weight <= self.max_weight:
-            self.things.append(thing)
+    @duration.setter
+    def duration(self, value):
+        self.__duration = value
 
-    def remove_thing(self, indx):
-        if self.things:
-            self.things.pop(indx)
+
+class TVProgram:
+    def __init__(self, name):
+        self.name = name
+        self.items = []
+        self.indices = []
+
+    def add_telecast(self, tl: Telecast):
+        if isinstance(tl.uid, int) and tl.uid not in self.indices:
+            self.items.append(tl)
+            self.indices.append(tl.uid)
+
+    def remove_telecast(self, indx: int):
+        tl = list(filter(lambda x: x.uid == indx, self.items))[0]
+        self.items.remove(tl)
+        self.indices.remove(indx)
 
