@@ -1,42 +1,53 @@
-class Product:
-    __ID = 0
+class LessonItem:
+    title: str
+    practices: int
+    duration: int
 
-    id: int
-    name: str
-    weight: (int, float)
-    price: (int, float)
-
-    def __init__(self, name, weight, price):
-        self.id = Product.set_id()
-        self.name = name
-        self.weight = weight
-        self.price = price
+    def __init__(self, title, practices, duration):
+        self.title = title
+        self.practices = practices
+        self.duration = duration
 
     def __setattr__(self, key, value):
-        if not isinstance(value, self.__annotations__.get(key)) or (key in ('price', 'weight') and value < 0):
-            raise TypeError('Неверный тип присваиваемых данных.')
+        if not isinstance(value, self.__annotations__.get(key)):
+            raise TypeError('Неверный тип присваиваемых данных."')
 
         super().__setattr__(key, value)
 
+    def __getattr__(self, item):
+        return False
+
     def __delattr__(self, item):
-        if item == 'id':
-            raise AttributeError("Атрибут id удалять запрещено.")
-
-        super().__delattr__(item)
-
-    @classmethod
-    def set_id(cls):
-        cls.__ID += 1
-        return cls.__ID
+        return
 
 
-class Shop:
+class Module:
+    name: str
+    lessons: list
+
     def __init__(self, name):
         self.name = name
-        self.goods = []
+        self.lessons = []
 
-    def add_product(self, product: Product):
-        self.goods.append(product)
+    def add_lesson(self, lesson: LessonItem):
+        self.lessons.append(lesson)
 
-    def remove_product(self, product):
-        self.goods.remove(product)
+    def remove_lesson(self, indx):
+        self.lessons.pop(indx)
+
+
+class Course:
+    name: str
+    modules: list
+
+    def __init__(self, name):
+        self.name = name
+        self.modules = []
+
+    def add_module(self, module: Module):
+        self.modules.append(module)
+
+    def remove_module(self, indx):
+        self.modules.pop(indx)
+
+
