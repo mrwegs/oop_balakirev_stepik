@@ -1,50 +1,51 @@
-class Picture:
-    name: str
-    author: str
-    descr: str
+class AppVK:
+    __instance = None
 
-    def __init__(self, name, author, descr):
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            return super().__new__(cls)
+        return cls.__instance
+
+    def __init__(self, name='ВКонтакте'):
         self.name = name
-        self.author = author
-        self.descr = descr
 
 
-class Mummies:
-    name: str
-    location: str
-    descr: str
+class AppYouTube:
+    __instance = None
 
-    def __init__(self, name, location, descr):
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            return super().__new__(cls)
+        return cls.__instance
+
+    def __init__(self, max_size, name='YouTube'):
         self.name = name
-        self.location = location
-        self.descr = descr
+        self.max_size = max_size
 
 
-class Papyri:
-    name: str
-    date: str
-    descr: str
+class AppPhone:
+    __instance = None
 
-    def __init__(self, name, date, descr):
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            return super().__new__(cls)
+        return cls.__instance
+
+    def __init__(self, phone_list, name='Phone'):
         self.name = name
-        self.date = date
-        self.descr = descr
+        self.phone_list = phone_list
 
-class Museum:
-    name: str
-    exhibits: list
 
-    def __init__(self, name):
-        self.name = name
-        self.exhibits = []
+class SmartPhone:
+    model: str
+    apps: list
 
-    def add_exhibit(self, obj):
-        self.exhibits.append(obj)
+    def __init__(self, model):
+        self.model = model
 
-    def remove_exhibit(self, obj):
-        self.exhibits.remove(obj)
+    def add_app(self, app):
+        self.apps.append(app)
 
-    def get_info_exhibit(self, indx):
-        return f'Описание экспоната {self.exhibits[indx].name}: {self.exhibits[indx].descr}'
-
+    def remove_app(self, app):
+        self.apps.remove(app)
 
