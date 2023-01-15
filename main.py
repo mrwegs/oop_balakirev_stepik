@@ -1,21 +1,42 @@
-class Book(object):
-    title: str
-    author: str
-    pages: int
-    year: int
+class Product:
+    __ID = 0
 
-    def __init__(self, title='', author='', pages=0, year=0):
-        self.title = title
-        self.author = author
-        self.pages = pages
-        self.year = year
+    id: int
+    name: str
+    weight: (int, float)
+    price: (int, float)
+
+    def __init__(self, name, weight, price):
+        self.id = Product.set_id()
+        self.name = name
+        self.weight = weight
+        self.price = price
 
     def __setattr__(self, key, value):
-        if not isinstance(value, self.__annotations__.get(key)):
-            raise TypeError("Неверный тип присваиваемых данных.")
+        if not isinstance(value, self.__annotations__.get(key)) or (key in ('price', 'weight') and value < 0):
+            raise TypeError('Неверный тип присваиваемых данных.')
 
         super().__setattr__(key, value)
 
+    def __delattr__(self, item):
+        if item == 'id':
+            raise AttributeError("Атрибут id удалять запрещено.")
 
-book = Book(author='Сергей Балакирев', title='Python ООП', pages=123, year=2022)
+        super().__delattr__(item)
 
+    @classmethod
+    def set_id(cls):
+        cls.__ID += 1
+        return cls.__ID
+
+
+class Shop:
+    def __init__(self, name):
+        self.name = name
+        self.goods = []
+
+    def add_product(self, product: Product):
+        self.goods.append(product)
+
+    def remove_product(self, product):
+        self.goods.remove(product)
