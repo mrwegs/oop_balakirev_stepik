@@ -1,47 +1,21 @@
-class Telecast:
-    def __init__(self, id, name, duration):
-        self.__id = id
-        self.__name = name
-        self.__duration = duration
+class Book(object):
+    title: str
+    author: str
+    pages: int
+    year: int
 
-    @property
-    def uid(self):
-        return self.__id
+    def __init__(self, title='', author='', pages=0, year=0):
+        self.title = title
+        self.author = author
+        self.pages = pages
+        self.year = year
 
-    @uid.setter
-    def uid(self, value):
-        self.__id = value
-        
-    @property
-    def name(self):
-        return self.__name
-    
-    @name.setter
-    def name(self, value):
-        self.__name = value
-        
-    @property
-    def duration(self):
-        return self.__duration
+    def __setattr__(self, key, value):
+        if not isinstance(value, self.__annotations__.get(key)):
+            raise TypeError("Неверный тип присваиваемых данных.")
 
-    @duration.setter
-    def duration(self, value):
-        self.__duration = value
+        super().__setattr__(key, value)
 
 
-class TVProgram:
-    def __init__(self, name):
-        self.name = name
-        self.items = []
-        self.indices = []
-
-    def add_telecast(self, tl: Telecast):
-        if isinstance(tl.uid, int) and tl.uid not in self.indices:
-            self.items.append(tl)
-            self.indices.append(tl.uid)
-
-    def remove_telecast(self, indx: int):
-        tl = list(filter(lambda x: x.uid == indx, self.items))[0]
-        self.items.remove(tl)
-        self.indices.remove(indx)
+book = Book(author='Сергей Балакирев', title='Python ООП', pages=123, year=2022)
 
