@@ -1,53 +1,50 @@
-class LessonItem:
-    title: str
-    practices: int
-    duration: int
-
-    def __init__(self, title, practices, duration):
-        self.title = title
-        self.practices = practices
-        self.duration = duration
-
-    def __setattr__(self, key, value):
-        if not isinstance(value, self.__annotations__.get(key)):
-            raise TypeError('Неверный тип присваиваемых данных."')
-
-        super().__setattr__(key, value)
-
-    def __getattr__(self, item):
-        return False
-
-    def __delattr__(self, item):
-        return
-
-
-class Module:
+class Picture:
     name: str
-    lessons: list
+    author: str
+    descr: str
+
+    def __init__(self, name, author, descr):
+        self.name = name
+        self.author = author
+        self.descr = descr
+
+
+class Mummies:
+    name: str
+    location: str
+    descr: str
+
+    def __init__(self, name, location, descr):
+        self.name = name
+        self.location = location
+        self.descr = descr
+
+
+class Papyri:
+    name: str
+    date: str
+    descr: str
+
+    def __init__(self, name, date, descr):
+        self.name = name
+        self.date = date
+        self.descr = descr
+
+class Museum:
+    name: str
+    exhibits: list
 
     def __init__(self, name):
         self.name = name
-        self.lessons = []
+        self.exhibits = []
 
-    def add_lesson(self, lesson: LessonItem):
-        self.lessons.append(lesson)
+    def add_exhibit(self, obj):
+        self.exhibits.append(obj)
 
-    def remove_lesson(self, indx):
-        self.lessons.pop(indx)
+    def remove_exhibit(self, obj):
+        self.exhibits.remove(obj)
 
-
-class Course:
-    name: str
-    modules: list
-
-    def __init__(self, name):
-        self.name = name
-        self.modules = []
-
-    def add_module(self, module: Module):
-        self.modules.append(module)
-
-    def remove_module(self, indx):
-        self.modules.pop(indx)
+    def get_info_exhibit(self, indx):
+        return f'Описание экспоната {self.exhibits[indx].name}: {self.exhibits[indx].descr}'
 
 
