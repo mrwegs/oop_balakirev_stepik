@@ -1,52 +1,45 @@
-from typing import Union
+class Dimensions:
+    MIN_DIMENSION = 10
+    MAX_DIMENSION = 1000
 
+    __a: (int, float)
+    __b: (int, float)
+    __c: (int, float)
 
-class Circle:
-    __x: Union[int, float]
-    __y: Union[int, float]
-    __radius: Union[int, float]
-
-    def __init__(self, x, y, radius):
-        self.__x = x
-        self.__y = y
-        self.__radius = radius
-
-    @property
-    def x(self):
-        return self.__x
-
-    @x.setter
-    def x(self, value):
-        self.__x = value
+    def __init__(self, a, b, c):
+        self.__a = a
+        self.__b = b
+        self.__c = c
 
     @property
-    def y(self):
-        return self.__y
+    def a(self):
+        return self.__a
 
-    @y.setter
-    def y(self, value):
-        self.__y = value
+    @a.setter
+    def a(self, value):
+        if value in range(self.MIN_DIMENSION, self.MAX_DIMENSION + 1):
+            self.__a = value
 
     @property
-    def radius(self):
-        return self.__radius
+    def b(self):
+        return self.__b
 
-    @radius.setter
-    def radius(self, value):
-        self.__radius = value
+    @b.setter
+    def b(self, value):
+        if value in range(self.MIN_DIMENSION, self.MAX_DIMENSION + 1):
+            self.__b = value
+
+    @property
+    def c(self):
+        return self.__c
+
+    @c.setter
+    def c(self, value):
+        if value in range(self.MIN_DIMENSION, self.MAX_DIMENSION + 1):
+            self.__c = value
 
     def __setattr__(self, key, value):
-        if not isinstance(value, (int, float)):
-            raise TypeError('Неверный тип присваиваемых данных.')
-        elif key == 'radius' and value < 0:
-            return
+        if key in ('MIN_DIMENSION', 'MAX_DIMENSION'):
+            raise AttributeError('Менять атрибуты MIN_DIMENSION и MAX_DIMENSION запрещено.')
         super().__setattr__(key, value)
 
-    def __getattr__(self, item):
-        return False
-
-
-circle = Circle(10.5, 7, 22)
-circle.radius = -10 # прежнее значение не должно меняться, т.к. отрицательный радиус недопустим
-x, y = circle.x, circle.y
-res = circle.name # False, т.к. атрибут name не существует
