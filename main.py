@@ -1,45 +1,57 @@
-class Dimensions:
-    MIN_DIMENSION = 10
-    MAX_DIMENSION = 1000
+import time
 
-    __a: (int, float)
-    __b: (int, float)
-    __c: (int, float)
 
-    def __init__(self, a, b, c):
-        self.__a = a
-        self.__b = b
-        self.__c = c
+class WaterFilter:
+    date: float
 
-    @property
-    def a(self):
-        return self.__a
-
-    @a.setter
-    def a(self, value):
-        if value in range(self.MIN_DIMENSION, self.MAX_DIMENSION + 1):
-            self.__a = value
-
-    @property
-    def b(self):
-        return self.__b
-
-    @b.setter
-    def b(self, value):
-        if value in range(self.MIN_DIMENSION, self.MAX_DIMENSION + 1):
-            self.__b = value
-
-    @property
-    def c(self):
-        return self.__c
-
-    @c.setter
-    def c(self, value):
-        if value in range(self.MIN_DIMENSION, self.MAX_DIMENSION + 1):
-            self.__c = value
+    def __init__(self, date):
+        self.date = date
 
     def __setattr__(self, key, value):
-        if key in ('MIN_DIMENSION', 'MAX_DIMENSION'):
-            raise AttributeError('Менять атрибуты MIN_DIMENSION и MAX_DIMENSION запрещено.')
+        if key == 'date' and key in self.__dict__.keys():
+            return
         super().__setattr__(key, value)
 
+
+class Mechanical(WaterFilter):
+    pass
+
+
+class Aragon(WaterFilter):
+    pass
+
+
+class Calcium(WaterFilter):
+    pass
+
+
+class GeyserClassic:
+    MAX_DATE_FILTER: int = 100
+
+    slot_1: Mechanical
+    slot_2: Aragon
+    slot_3: Calcium
+
+    all_filters: dict
+
+    def __init__(self):
+        self.all_filters = {'1': None, '2': None, '3': None}
+
+    def __setattr__(self, key, value):
+        super().__setattr__(key, value)
+
+    def add_filter(self, slot_num, filter):
+        if self.all_filters[str(slot_num)] is None and isinstance(filter, self.__annotations__.get(f'slot_{slot_num}')):
+            self.all_filters[str(slot_num)] = filter
+
+    def remove_filter(self, slot_num):
+        self.all_filters[str(slot_num)] = None
+
+    def get_filters(self):
+        return self.all_filters.values()
+
+    def water_on(self):
+        for water_filter in self.all_filters.values():
+            if not water_filter or time.time() - water_filter.date > self.MAX_DATE_FILTER:
+                return False
+        return True
