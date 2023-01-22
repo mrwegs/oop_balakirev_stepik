@@ -1,20 +1,13 @@
-class Handler:
-    def __init__(self, methods):
-        self.methods = methods
+class InputDigits:
+    def __init__(self, func):
+        self.func = func
 
-    def __call__(self, func):
-        def wrapper(*args, **kwargs):
-            method = args[0].get('method', None) or 'GET'
-            if method in self.methods:
-                return self.__getattribute__(f'{method.lower()}')(func, args[0])
-            return None
+    def __call__(self, *args, **kwargs):
+        input_numbers = self.func()
+        return list(map(int, input_numbers.split()))
 
-        return wrapper
 
-    @staticmethod
-    def get(func, request, *args, **kwargs):
-        return f'GET: {func(request)}'
+input_dg = InputDigits(input)
+res = input_dg()
 
-    @staticmethod
-    def post(func, request, *args, **kwargs):
-        return f'POST: {func(request)}'
+
