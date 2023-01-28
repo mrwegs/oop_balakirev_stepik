@@ -1,20 +1,23 @@
-import sys
+from typing import Union, Dict
 
-class Book:
-    title: str
-    author: str
-    pages: int
 
-    def __init__(self, title, author, pages):
-        self.title = title
-        self.author = author
-        self.pages = pages
+class Model:
+    repr: str
+    fields: Union[Dict, None]
+
+    def __init__(self):
+        self.repr = 'Model'
+        self.fields = None
+
+    def query(self, **kwargs):
+        self.fields = kwargs
+        self.repr += f': {", ".join([f"{k}={v}" for k, v in self.fields.items()])}'
 
     def __str__(self):
-        return f'Книга: {self.title}; {self.author}; {self.pages}'
+        return self.repr
 
 
-lst_in = list(map(str.strip, sys.stdin.readlines())) # считывание списка из входного потока (эту строчку не менять)
-book = Book(*lst_in)
-
-print(book)
+# model = Model()
+# model.query(id=1, name='Bob', age=56)
+#
+# print(model)
