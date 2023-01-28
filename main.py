@@ -1,23 +1,21 @@
-from typing import Union, Dict
+class WordString:
+    string: str
 
+    def __init__(self, string=''):
+        self.__string = string
 
-class Model:
-    repr: str
-    fields: Union[Dict, None]
+    @property
+    def string(self):
+        return self.__string
 
-    def __init__(self):
-        self.repr = 'Model'
-        self.fields = None
+    @string.setter
+    def string(self, value):
+        if isinstance(value, str):
+            self.__string = value
 
-    def query(self, **kwargs):
-        self.fields = kwargs
-        self.repr += f': {", ".join([f"{k}={v}" for k, v in self.fields.items()])}'
+    def __len__(self):
+        return len(self.string.split())
 
-    def __str__(self):
-        return self.repr
+    def __call__(self, *args, **kwargs):
+        return self.string.split()[args[0]]
 
-
-# model = Model()
-# model.query(id=1, name='Bob', age=56)
-#
-# print(model)
