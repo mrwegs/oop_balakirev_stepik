@@ -1,29 +1,20 @@
-class InputValues:
-    def __init__(self, render):     # render - ссылка на функцию или объект для преобразования
-        self.render = render
+import sys
 
-    def __call__(self, func):     # func - ссылка на декорируемую функцию
-        def wrapper(*args, **kwargs):
-            number_list = list(map(self.render, func().split()))
-            return number_list
-        return wrapper
+class Book:
+    title: str
+    author: str
+    pages: int
 
+    def __init__(self, title, author, pages):
+        self.title = title
+        self.author = author
+        self.pages = pages
 
-class RenderDigit:
-    def __call__(self, *args, **kwargs):
-        try:
-            return int(args[0])
-        except ValueError:
-            return None
+    def __str__(self):
+        return f'Книга: {self.title}; {self.author}; {self.pages}'
 
 
-@InputValues(RenderDigit())
-def input_dg():
-    return input()
+lst_in = list(map(str.strip, sys.stdin.readlines())) # считывание списка из входного потока (эту строчку не менять)
+book = Book(*lst_in)
 
-
-res = input_dg()
-print(res)
-
-
-
+print(book)
